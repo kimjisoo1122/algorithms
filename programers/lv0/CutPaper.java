@@ -1,4 +1,4 @@
-package programers;
+package programers.lv0;
 
 public class CutPaper {
     public static int solution(int M, int N) {
