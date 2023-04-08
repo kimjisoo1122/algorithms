@@ -22,7 +22,7 @@ public class Solution {
     }
 
     public static void main(String[] args) {
-        int[] solution = solution(new int[]{4, 455, 6, 4, -1, 45, 6}, "right");
+        int[] solution = solution(new int[]{4, 455, 6, 4, -1, 45, 6},  "right");
         System.out.println(Arrays.toString(solution));
 
     }
