@@ -1,10 +1,6 @@
 package programers.lv1;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-public class StarngeWord {
+public class StrangeWord {
     public String solution(String s) {
         String[] arr = s.split(" ");
         boolean flag = true;
@@ -29,7 +25,7 @@ public class StarngeWord {
     }
 
     public static void main(String[] args) {
-        String solution = new StarngeWord().solution("try  hello world");
+        String solution = new StrangeWord().solution("try  hello world");
         System.out.println("solution = " + solution);
     }
 }
