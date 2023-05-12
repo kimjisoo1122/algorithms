@@ -1,22 +1,15 @@
 package programers.lv1;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.IntStream;
-
 public class StringSolution {
     public int solution(String t, String p) {
-
-
-        List<String> list = new ArrayList<>();
-        String[] split = t.split("");
-        for (int i = 0; i < split.length - (p.length() - 1); i++) {
-            StringBuilder sb = new StringBuilder();
-            IntStream.range(i, i + p.length())
-                    .forEach(k -> sb.append(split[k]));
-            list.add(sb.toString());
+        int result = 0;
+        for (int i = 0; i < t.length() - (p.length() - 1); i++) {
+            String substring = t.substring(i, i + p.length());
+            if (substring.compareTo(p) <= 0) {
+                result++;
+            }
         }
-        return (int) list.stream().filter(i -> i.compareTo(p) <= 0).count();
+        return result;
     }
 
     public static void main(String[] args) {
