@@ -15,6 +15,7 @@ public class Stage {
 
         LinkedHashMap<Double, List<Integer>> linkedHashMap = new LinkedHashMap<>();
         TreeSet<Double> treeSet = new TreeSet<>(Comparator.reverseOrder());
+
         for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
             double failure = (double) entry.getValue().size() / challenger;
             challenger -= entry.getValue().size();
