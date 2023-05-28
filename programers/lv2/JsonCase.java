@@ -1,23 +1,17 @@
 package programers.lv2;
 
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
 public class JsonCase {
     public static String solution(String s) {
         String lowerCase = s.toLowerCase();
-        Pattern pattern = Pattern.compile("^[\\S]");
 
-        return Arrays.stream(lowerCase.split(" "))
-                .map(str -> {
-                    System.out.println("str = " + str);
-                    Matcher matcher = pattern.matcher(str);
-                    String firstWord = matcher.group();
-                    return str.replace(firstWord, firstWord.toUpperCase());
-                })
-                .collect(Collectors.joining(" "));
+        String[] arr = lowerCase.split("");
+        arr[0] = arr[0].toUpperCase();
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i - 1].isBlank()) {
+                arr[i] = arr[i].toUpperCase();
+            }
+        }
+        return String.join("", arr);
     }
 
     public static void main(String[] args) {
