@@ -7,7 +7,7 @@ public class Jump2 {
 
         if (n == 1) return (long) 1 % 1234567;
 
-        int minLen = Math.max(Math.round(n / 2), 2);
+        int minLen = (int) Math.round(n / (double) 2);
         int numLen = n;
         int answer = 1;
         int twoCnt = 0;
@@ -29,7 +29,7 @@ public class Jump2 {
         return (long) answer % 1234567;
     }
     private static long factorial(int n) {
-        if (n == 0) {
+        if (n == 1) {
             return 1;
         }
         return n * factorial(n - 1);
