@@ -1,42 +1,18 @@
 package programers.lv2;
 
-import java.util.Arrays;
-
 public class Jump2 {
     public static long solution(int n) {
 
-        if (n == 1) return (long) 1 % 1234567;
-
-        int minLen = (int) Math.round(n / (double) 2);
-        int numLen = n;
-        int answer = 1;
-        int twoCnt = 0;
-        while (true) {
-            numLen--;
-            twoCnt++;
-            if (numLen == minLen) {
-                answer += n % 2 == 0 ? 1 : numLen;
-                break;
-            } else {
-                int temp = numLen;
-                for (int i = numLen - 1; i > numLen - twoCnt; i--) {
-                    temp *= i;
-                }
-                long factorial = factorial(twoCnt);
-                answer += temp / factorial;
-            }
+        int[] arr = new int[n + 1];
+        arr[0] = 1;
+        arr[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            arr[i] = (arr[i - 1] + arr[i - 2]) % 1234567;
         }
-        return (long) answer % 1234567;
+        return arr[n];
     }
-    private static long factorial(int n) {
-        if (n == 1) {
-            return 1;
-        }
-        return n * factorial(n - 1);
-    }
-
     public static void main(String[] args) {
-        long solution = solution(16);
+        long solution = solution(4);
         System.out.println("solution = " + solution);
         /**
          * 경우의수 구하는 공식
