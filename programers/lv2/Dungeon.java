@@ -1,29 +1,22 @@
 package programers.lv2;
 
 public class Dungeon {
-    static boolean[] visited;
-    static int answer = 0;
+    int answer;
 
-    public static int solution(int k, int[][] dungeons) {
-        visited = new boolean[dungeons.length];
-
-        return dfs(dungeons,k,visited,0);
+    public int solution(int k, int[][] dungeons) {
+        boolean[] visited = new boolean[dungeons.length];
+        dfs(0, k, dungeons, visited);
+        return answer;
     }
 
-    private static int dfs(int[][] dungeons, int k, boolean[] visited, int count){
-        for(int i = 0; i < dungeons.length; i++){
-            if(k >= dungeons[i][0] && !visited[i]){
+    void dfs(int depth, int k, int[][] dungeons, boolean[] visited) {
+        for (int i = 0; i < dungeons.length; i++) {
+            if (!visited[i] && k >= dungeons[i][0]) {
                 visited[i] = true;
-                dfs(dungeons,k - dungeons[i][1], visited, count + 1);
+                dfs(depth + 1, k - dungeons[i][1], dungeons, visited);
                 visited[i] = false;
             }
         }
-        answer = Math.max(answer, count);
-
-        return answer;
-    }
-    public static void main(String[] args) {
-        int solution = solution(80, new int[][]{{80, 20}, {50, 40}, {30, 10}});
-        System.out.println("solution = " + solution);
+        answer = Math.max(depth, answer);
     }
 }
