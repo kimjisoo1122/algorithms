@@ -12,6 +12,10 @@ public class HashPhoneBook {
             String firstWord = s.substring(0, minLen);
             ArrayList<String> list = new ArrayList<>();
             list.add(s);
+            Optional.ofNullable(map.putIfAbsent(firstWord, list))
+                    .ifPresent(e -> {
+                        e.add(s);
+                    });
             List<String> ifAbsent = map.putIfAbsent(firstWord, list);
             if (ifAbsent != null) {
                 ifAbsent.add(s);
@@ -40,6 +44,7 @@ public class HashPhoneBook {
         System.out.println("solution = " + solution);
         String substring = "12".substring(0, 2);
         System.out.println(substring);
+
 
     }
 }
