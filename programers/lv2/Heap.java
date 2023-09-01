@@ -33,7 +33,8 @@ public class Heap {
             }
 
             int addScoville = firstNum + (secondNum * 2);
-            deque.addFirst(addScoville);
+            deque.add(addScoville);
+            deque = deque.stream().sorted().collect(Collectors.toCollection(ArrayDeque::new));
 
             cnt++;
         }
