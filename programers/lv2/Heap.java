@@ -12,7 +12,7 @@ public class Heap {
                 .boxed()
                 .collect(Collectors.toCollection(ArrayDeque::new));
 
-        if (deque.size() == 0) {
+        if (deque.isEmpty()) {
             return 0;
         }
 
@@ -22,17 +22,17 @@ public class Heap {
 
         int cnt = 0;
         while (deque.size() >= 2) {
-            Integer first = deque.pollFirst();
-            Integer second = deque.pollFirst();
+            Integer firstPoll = deque.pollFirst();
+            Integer secondPoll = deque.pollFirst();
 
-            int num1 = Math.min(first, second);
-            int num2 = Math.max(first, second);
+            int firstNum = Math.min(firstPoll, secondPoll);
+            int secondNum = Math.max(firstPoll, secondPoll);
 
-            if (num1 >= K) {
+            if (firstNum >= K) {
                 return cnt;
             }
 
-            int addScoville = num1 + (num2 * 2);
+            int addScoville = firstNum + (secondNum * 2);
             deque.addFirst(addScoville);
 
             cnt++;
@@ -42,7 +42,7 @@ public class Heap {
     }
 
     public static void main(String[] args) {
-        int solution = solution(new int[]{1, 2, 3, 9, 10, 12}, 50);
+        int solution = solution(new int[]{1, 2, 3, 9, 10, 12}, 7);
         System.out.println("solution = " + solution);
     }
 }
