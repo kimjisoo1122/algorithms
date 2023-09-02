@@ -1,45 +1,62 @@
 package programers.lv2;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class Heap {
     public static int solution(int[] scoville, int K) {
-        Arrays.sort(scoville);
+        TreeMap<Integer, Long> treeMap = Arrays.stream(scoville)
+            .filter(i -> i < K)
+            .sorted()
+            .boxed()
+            .collect(Collectors.groupingBy(i -> i, TreeMap::new, Collectors.counting()));
 
-        Deque<Integer> deque = Arrays.stream(scoville)
-                .filter(i -> i < K)
-                .boxed()
-                .collect(Collectors.toCollection(ArrayDeque::new));
-
-        if (deque.isEmpty()) {
+        if (treeMap.isEmpty()) {
             return 0;
         }
 
-        if (deque.size() < scoville.length) {
-            deque.add(scoville[deque.size()]);
+        if (treeMap.size() < scoville.length) {
+            treeMap.put(K, 1L);
         }
 
         int cnt = 0;
-        while (deque.size() >= 2) {
-            Integer firstPoll = deque.pollFirst();
-            Integer secondPoll = deque.pollFirst();
+        while (treeMap.size() >= 2) {
+            Integer firstPoll;
+            Integer secondPoll;
 
-            int firstNum = Math.min(firstPoll, secondPoll);
-            int secondNum = Math.max(firstPoll, secondPoll);
+            Entry<Integer, Long> firstEntry = treeMap.pollFirstEntry();
+            firstPoll = firstEntry.getKey();
+            Long firstCnt = firstEntry.getValue();
 
-            if (firstNum >= K) {
+            if (firstPoll >= K) {
                 return cnt;
             }
 
-            int addScoville = firstNum + (secondNum * 2);
-            deque.add(addScoville);
-            deque = deque.stream().sorted().collect(Collectors.toCollection(ArrayDeque::new));
+            if (firstCnt > 1) {
+                secondPoll = firstPoll;
+
+                if (firstCnt > 2) {
+                    treeMap.put(secondPoll, firstEntry.getValue() - 2);
+                }
+
+            } else {
+                Entry<Integer, Long> secondEntry = treeMap.pollFirstEntry();
+                secondPoll = secondEntry.getKey();
+
+                if (secondEntry.getValue() > 1) {
+                    treeMap.put(secondPoll, secondEntry.getValue() - 1);
+                }
+            }
+
+            Integer addScovile = firstPoll + (secondPoll * 2);
+            treeMap.compute(addScovile, (k, v) -> v == null ? 1 : v + 1);
 
             cnt++;
         }
 
-        return deque.pop() >= K ? cnt : -1;
+        return treeMap.firstKey() >= K ? cnt : -1;
     }
 
     public static void main(String[] args) {
