@@ -1,103 +1,48 @@
 package programers.lv2;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class RoRGame {
+    int[][] visited;
+    int[][] maps;
+    int xLen;
+    int yLen;
+    int[] dx = {0, 0, 1, -1}; // 동 서 남 북
+    int[] dy = {1, -1, 0, 0};
 
-    public static int solution(int[][] maps) {
-        // dfs
-        List<String> directions = new ArrayList<>();
-        directions.add("E");
-        directions.add("S");
-        directions.add("W");
-        directions.add("N");
+    public int solution(int[][] maps) {
+        this.visited = new int[maps.length][maps[0].length];
+        this.maps = maps;
+        xLen = maps.length;
+        yLen = maps[0].length;
+        visited[0][0] = 1;
 
-        PriorityQueue<Integer> priorityQueue = new PriorityQueue<>(Comparator.reverseOrder());
-
-        dfs(1, 0, 0, maps, directions, priorityQueue);
-
-        System.out.println("priorityQueue = " + priorityQueue);
-        Integer poll = priorityQueue.poll();
-
-        return poll == null ? -1 : poll;
+        bfs();
+        return visited[xLen - 1][yLen - 1] == 0 ? - 1 :  visited[xLen - 1][yLen - 1];
     }
 
-    public static void dfs(int score, int x, int y, int[][] maps, List<String> directions, PriorityQueue<Integer> priorityQueue) {
-        if (x == maps.length - 1 && y == maps[x].length - 1) {
-            priorityQueue.add(score);
-            return;
-        }
+    public void bfs() {
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{0, 0});
 
-        int beforeX = x;
-        int beforeY = y;
+        while (!queue.isEmpty()) {
+            int[] poll = queue.remove();
+            int currX = poll[0];
+            int currY = poll[1];
 
-
-        for (String direction : directions) {
-            switch (direction) {
-                case "E":
-                    y += 1;
-                    break;
-                case "S":
-                    x += 1;
-                    break;
-                case "W":
-                    y -= 1;
-                    break;
-                case "N":
-                    x -= 1;
-                    break;
-            }
-
-            try {
-                int num = maps[x][y];
-                if (num == 0) {
-                    throw new IndexOutOfBoundsException();
+            for (int i = 0; i < 4; i++) {
+                int x = currX + dx[i];
+                int y = currY + dy[i];
+                if ((x >= xLen || x < 0) || (y >= yLen || y < 0)) {
+                    continue;
                 }
 
-                directions = validateDirections(direction);
-                dfs(score + 1, x, y, maps, directions, priorityQueue);
-            } catch (IndexOutOfBoundsException e) {
-                x = beforeX;
-                y = beforeY;
+                if (visited[x][y] == 0 && maps[x][y] == 1) {
+                    visited[x][y] = visited[currX][currY] + 1;
+                    queue.add(new int[]{x, y});
+                }
             }
         }
-    }
-
-    public static List<String> validateDirections(String direction) {
-        List<String> directions = new ArrayList<>();
-        directions.add("E");
-        directions.add("S");
-        directions.add("N");
-        directions.add("W");
-        switch (direction) {
-            case "E":
-                directions = Arrays.asList("E", "S", "N");
-                break;
-            case "S":
-                directions = Arrays.asList("E", "S", "W");
-                break;
-            case "W":
-                directions = Arrays.asList("S", "W", "N");
-                break;
-            case "N":
-                directions = Arrays.asList("E", "N", "W");
-                break;
-        }
-        return directions;
-    }
-
-    public static void main(String[] args) {
-        int solution = solution(
-            new int[][]{
-                {1, 0, 1, 1, 1},
-                {1, 0, 1, 0, 1},
-                {1, 0, 1, 1, 1},
-                {1, 1, 1, 0, 1},
-                {0, 0, 0, 0, 1}});
-        System.out.println("solution = " + solution);
     }
 }
